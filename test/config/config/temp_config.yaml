@@ -1,0 +1,12 @@
+---
+new_post_name: :title.md
+default_layout: post
+highlight:
+  line_number: true
+baidusitemap:
+  path: baidusitemap.xml
+database:
+  rdbms: null
+  nosql:
+    - mongodb
+    - redis

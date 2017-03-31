@@ -1,0 +1,18 @@
+new_post_name: :title.md # File name of new posts
+default_layout: post
+highlight:
+  enable: true
+  line_number: true
+
+baidusitemap:
+  path: baidusitemap.xml
+
+database:
+  rdbms:
+    oracle
+    mysql
+    sqlserver
+  nosql:
+    mongodb
+    redis
+

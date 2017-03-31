@@ -1,0 +1,14 @@
+{
+  "api" : {
+    "qiniu": "qiniu -api",
+    "aliyun": {
+      "db": [
+        "redis",
+        "memcached",
+        "memcache",
+        "nosql",
+        "rdbms"
+      ]
+    }
+  }
+}

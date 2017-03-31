@@ -1,0 +1,21 @@
+{
+  "name": "oopsguy/components",
+  "description": "Personal PHP Utils",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Oopsguy",
+      "email": "474608426@qq.com"
+    }
+  ],
+  "require": {
+    "mustangostang/spyc": "0.6.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "oopsguy\\": "src/",
+      "test\\": "test/"
+    }
+  }
+}
