@@ -4,6 +4,7 @@ namespace oopsguy\config;
 
 use oopsguy\config\parser\IParser;
 use oopsguy\config\provider\AbstractProvider;
+use oopsguy\utils\ArrayUtil;
 
 /**
  * 配置文件类
@@ -150,7 +151,12 @@ class Configuration implements \ArrayAccess
         $keys = $this->parseKey($key);
 
         return $this->find($this->config, $keys, function ($item, &$config, $index) {
+            $isAssoc = ArrayUtil::isAssocArray($config);
             unset($config[$index]);
+            //不是关联数组的数组需要从新排序下标
+            if (!$isAssoc) {
+                $config = array_values($config);
+            }
         });
     }
 

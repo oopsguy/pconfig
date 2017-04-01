@@ -4,7 +4,7 @@
 
 ## Configuration 配置库
 
-尽可能尝试解析各种配置文件，如`JSON`、`PHP`、`YAML`、`XML`和`INI`等格式的配置文件。配置类能够针对这些文件解析并对其内容操作。
+不同的类库或者框架使用的配置文件格式可能是不一样的，这造成了配置文件不能通用的难题。本配置类库结合了自己在开发中经常遇到和使用到的一些配置文件操作方式，并汲取了其他框架操作配置文件方式的优点，它尽可能尝试解析各种配置文件，如`JSON`、`PHP`、`YAML`、`XML`和`INI`等格式的配置文件。配置类能够针对这些文件解析并对其内容操作。
 
 其中用于操纵的主类是`oopsguy\config\Configuration`类，其依赖了`oopsguy\config\parse\IParser`内容解析器接口和`oopsguy\config\provider\AbstractProvider`内容访问抽象类。通过定制IParser和AbstractProvider的实现，可以针对不同格式的配置内容解析和不同存储方式的配置操作。
 
