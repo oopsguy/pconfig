@@ -33,6 +33,16 @@ class Configuration implements \ArrayAccess
     const VALUE_CASE_LOWER = CASE_LOWER;
 
     /**
+     * 元素不存在时中断寻找
+     */
+    const EXISTS_MODE_BREAK = 0;
+
+    /**
+     * 元素不存在时追加空数组
+     */
+    const EXISTS_MODE_APPEND = 1;
+
+    /**
      * @var array 配置内容
      */
     private $config = [];
@@ -159,7 +169,7 @@ class Configuration implements \ArrayAccess
 
         return $this->find($this->config, $keys, function (&$item) use ($value) {
             $item = $value;
-        });
+        }, self::EXISTS_MODE_APPEND);
     }
 
     /**
@@ -247,19 +257,28 @@ class Configuration implements \ArrayAccess
      * @param array $config 配置数组
      * @param array $keys $key 配置项下标数组
      * @param \Closure|null $callback 处理回调
+     * @param int $existsMode 元素不能存在的时候的处理方式
      * @param int $index 当前配置下标的位置
      * @return bool 是否找到配置项
      */
-    private function find(array &$config, array $keys, \Closure $callback = null, $index = 0)
+    private function find(array &$config, array $keys, \Closure $callback = null, $existsMode=self::EXISTS_MODE_BREAK, $index = 0)
     {
-        if (count($keys) - 1 == $index && isset($config[$keys[$index]])) {
+        if(!isset($config[$keys[$index]])) {
+            if ($existsMode == self::EXISTS_MODE_BREAK) {
+                return false;
+            }
+
+            $config[$keys[$index]] = [];
+        }
+
+        if (count($keys) - 1 == $index) {
             is_callable($callback) && $callback($config[$keys[$index]], $config, $keys[$index]);
 
             return true;
         }
 
-        if (isset($config[$keys[$index]]) && is_array($config[$keys[$index]])) {
-            return $this->find($config[$keys[$index]], $keys, $callback, $index + 1);
+        if (is_array($config[$keys[$index]])) {
+            return $this->find($config[$keys[$index]], $keys, $callback, $existsMode, $index + 1);
         }
 
         return false;
