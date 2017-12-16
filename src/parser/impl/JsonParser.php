@@ -1,14 +1,14 @@
 <?php
 
-namespace oopsguy\config\parser\impl;
+namespace pconfig\parser\impl;
 
-use oopsguy\config\parser\IParser;
+use pconfig\parser\IParser;
 
 /**
  * JSON配置文件解析类
  * Class JsonParser
- * @package oopsguy\config\parser\impl
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig\parser\impl
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 class JsonParser implements IParser
 {

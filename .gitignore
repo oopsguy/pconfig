@@ -1,2 +1,4 @@
+/test
 /vendor
 /.idea
+/composer.lock

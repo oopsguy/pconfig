@@ -1,12 +1,12 @@
 <?php
 
-namespace oopsguy\config\provider;
+namespace pconfig\provider;
 
 /**
  * 配置文件内容操作类
  * Class AbstractProvider
- * @package oopsguy\config\provider
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig\provider
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 abstract class AbstractProvider
 {

@@ -1,17 +1,17 @@
 <?php
 
-namespace oopsguy\config;
+namespace pconfig;
 
-use oopsguy\config\parser\IParser;
-use oopsguy\config\provider\AbstractProvider;
-use oopsguy\utils\ArrayUtil;
+use pconfig\parser\IParser;
+use pconfig\provider\AbstractProvider;
+use pconfig\utils\ArrayUtil;
 
 /**
  * 配置文件类
- * @package oopsguy\config
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
-class Configuration implements \ArrayAccess
+class Config implements \ArrayAccess
 {
     /**
      * 默认配置项下标分割符
@@ -162,8 +162,8 @@ class Configuration implements \ArrayAccess
 
     /**
      * 设置配置
-     * @param $key $key 配置项名称，可以获取多层次配置，层次之间用配置分割符分割
-     * @param $value 配置的值
+     * @param string $key $key 配置项名称，可以获取多层次配置，层次之间用配置分割符分割
+     * @param mixed $value 配置的值
      * @return bool 是否设置成功
      */
     public function set($key, $value)
@@ -267,9 +267,9 @@ class Configuration implements \ArrayAccess
      * @param int $index 当前配置下标的位置
      * @return bool 是否找到配置项
      */
-    private function find(array &$config, array $keys, \Closure $callback = null, $existsMode=self::EXISTS_MODE_BREAK, $index = 0)
+    private function find(array &$config, array $keys, \Closure $callback = null, $existsMode = self::EXISTS_MODE_BREAK, $index = 0)
     {
-        if(!isset($config[$keys[$index]])) {
+        if (!isset($config[$keys[$index]])) {
             if ($existsMode == self::EXISTS_MODE_BREAK) {
                 return false;
             }

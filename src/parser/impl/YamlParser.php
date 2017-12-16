@@ -1,15 +1,14 @@
 <?php
 
-namespace oopsguy\config\parser\impl;
+namespace pconfig\parser\impl;
 
-use oopsguy\config\parser\IParser;
-use Spyc;
+use pconfig\parser\IParser;
 
 /**
  * YAML配置文件解析类
  * Class YamlParser
- * @package oopsguy\config\parser\impl
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig\parser\impl
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 class YamlParser implements IParser
 {
@@ -21,7 +20,7 @@ class YamlParser implements IParser
      */
     function parse($content)
     {
-        return Spyc::YAMLLoadString($content);
+        return \Spyc::YAMLLoadString($content);
     }
 
     /**
@@ -31,6 +30,6 @@ class YamlParser implements IParser
      */
     function unParse($data)
     {
-        return Spyc::YAMLDump($data);
+        return \Spyc::YAMLDump($data);
     }
 }

@@ -1,20 +1,25 @@
 {
-  "name": "oopsguy/components",
-  "description": "Personal PHP Utils",
-  "minimum-stability": "stable",
+  "name": "oopsguy/pconfig",
+  "description": "A PHP library for config file. e.g. json, yaml, ini, xml, php",
   "license": "MIT",
   "authors": [
     {
       "name": "Oopsguy",
-      "email": "474608426@qq.com"
+      "email": "oopsguy@foxmail.com",
+      "homepage": "https://github.com/oopsguy/phpconf/graphs/contributors"
     }
   ],
+  "support": {
+    "issues": "https://github.com/oopsguy/phpconf/issues",
+    "source": "https://github.com/oopsguy/phpconf"
+  },
   "require": {
+    "php": ">=5.6.0",
     "mustangostang/spyc": "0.6.2"
   },
   "autoload": {
     "psr-4": {
-      "oopsguy\\": "src/",
+      "pconfig\\": "src/",
       "test\\": "test/"
     }
   }

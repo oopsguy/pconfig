@@ -1,12 +1,12 @@
 <?php
 
-namespace oopsguy\config\parser;
+namespace pconfig\parser;
 
 /**
  * 配置文件解析接口
- * @package oopsguy\config\parser
+ * @package pconfig\parser
  * Interface IParser
- * @author Oopsguy <474608426@qq.com>
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 interface IParser
 {

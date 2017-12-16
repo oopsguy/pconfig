@@ -1,14 +1,15 @@
 <?php
 
-namespace oopsguy\config\provider\impl;
+namespace pconfig\provider\impl;
 
-use oopsguy\config\provider\AbstractProvider;
+use pconfig\provider\AbstractProvider;
 
 /**
  * 文件型配置内容操作类
+ * Provide configuration data from a file
  * Class FileProvider
- * @package oopsguy\config\provider\impl
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig\provider\impl
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 class FileProvider extends AbstractProvider
 {
@@ -18,7 +19,7 @@ class FileProvider extends AbstractProvider
         parent::__construct($config);
 
         if (!isset($this->config['file']) || empty($this->config['file'])) {
-            throw new \Exception("Configuration 'file' must be required ");
+            throw new \Exception("Config 'file' must be required ");
         }
 
         $this->config['file'] = trim($this->config['file']);
@@ -26,6 +27,7 @@ class FileProvider extends AbstractProvider
 
     /**
      * 读取配置内容
+     * Read data from file
      * @return mixed 配置内容
      */
     function read()
@@ -43,6 +45,7 @@ class FileProvider extends AbstractProvider
 
     /**
      * 配置数据持久化
+     * Write data to file
      * @param mixed $data 配置数据
      * @return boolean 是否成功
      */

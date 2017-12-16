@@ -1,17 +1,17 @@
 <?php
 
-namespace oopsguy\config\parser\impl;
+namespace pconfig\parser\impl;
 
-use oopsguy\config\parser\IParser;
-use oopsguy\utils\ArrayUtil;
+use pconfig\parser\IParser;
+use pconfig\utils\ArrayUtil;
 
 /**
  * 数组配置文件解析类
- * Class ArrayParser
- * @package oopsguy\config\parser\impl\
- * @author Oopsguy <474608426@qq.com>
+ * Class PhpParser
+ * @package pconfig\parser\impl\PhpParser
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
-class ArrayParser implements IParser
+class PhpParser implements IParser
 {
 
     /**

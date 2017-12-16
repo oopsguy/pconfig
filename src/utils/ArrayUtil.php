@@ -1,12 +1,12 @@
 <?php
 
-namespace oopsguy\utils;
+namespace pconfig\utils;
 
 /**
  * 数组相关工具方法
  * Class ArrayUtil
- * @package oopsguy\utils
- * @author Oopsguy <474608426@qq.com>
+ * @package pconfig\utils
+ * @author Oopsguy <oopsguy@foxmail.com>
  */
 class ArrayUtil
 {
