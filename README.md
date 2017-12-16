@@ -1,4 +1,4 @@
-## PConfig 配置文件库
+# PConfig 配置文件库
 
 PConfig 是一个使用了 PHP 编写的配置文件解析库，能够解析 PHP（数组）、JSON、YAML、XML 和 INI 格式的文件，其统一了 API 操作，屏蔽了不同格式文件的解析细节，使用起来更加简单、高效。
 
