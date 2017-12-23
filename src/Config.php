@@ -26,12 +26,12 @@ class Config implements \ArrayAccess
     /**
      * 处理配置项名称统一大写
      */
-    const VALUE_CASE_UPPER = CASE_UPPER;
+    const KEY_CASE_UPPER = CASE_UPPER;
 
     /**
      * 处理配置项名称统一小写
      */
-    const VALUE_CASE_LOWER = CASE_LOWER;
+    const KEY_CASE_LOWER = CASE_LOWER;
 
     /**
      * 元素不存在时中断寻找
@@ -105,7 +105,7 @@ class Config implements \ArrayAccess
      * 设置配置文件
      * @param string $file 文件路径
      */
-    public function setConfigFile($file)
+    public function setPath($file)
     {
         $this->provider->setConfig('file', $file);
     }
