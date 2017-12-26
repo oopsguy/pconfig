@@ -2,7 +2,7 @@
 
 PConfig 是一个使用了 PHP 编写的配置文件解析库，能够解析 PHP（array）、JSON、YAML、XML 和 INI 格式的文件，其统一了 API 操作，屏蔽了不同格式文件的解析细节，使用起来更加简单、高效。
 
-PConfig is a PHP library for parsing config file (php, json, xml, yaml, ini).
+PConfig is a PHP library for parsing config file ( e.g. php, json, xml, yaml, ini...) It has simple apis and  easy to use. You can custom your own provider and parser to process data.
 
 ## 更新 Update
 
@@ -45,7 +45,7 @@ $config->save();
 // json file
 $jsonConfig = DefaultConfigBuilder::build('config/config.json');
 $jsonConfig->set('homepage', 'https://github.com');
-$jsonConfig->setPath('config/temp_json.json'); //save as temp_json.json file
+$jsonConfig->setPath('config/temp_json.json'); //Save as temp_json.json file
 $jsonConfig->save();
 
 $parser = new YamlParser();
@@ -57,7 +57,7 @@ $extConfig->save();
 
 配置项的层级关系使用逗号分割，您也可以配置自定义分割规则
 
-The hierarchy of configuration items is separated by commas, you an custom your own separator.
+The hierarchy of configuration items is separated by commas, you can custom your own separator.
 
 ```php
 <?php
@@ -66,11 +66,11 @@ use pconfig\provider\impl\FileProvider;
 use pconfig\parser\impl\JsonParser;
 
 $config = new Config(
-    new JsonParser(), // specify format parser
+    new JsonParser(), // Specify format parser
     new FileProvider(['file' => 'config/config.php']),
     [
-        Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, // change config keys into case lower
-        Config::CONFIG_SEPARATOR => '.', // setting config item separator
+        Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, // Change config keys into case lower
+        Config::CONFIG_SEPARATOR => '.', // Setting config item separator
     ]
 );
 ```
