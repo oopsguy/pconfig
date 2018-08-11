@@ -32,6 +32,10 @@ class FileProvider extends AbstractProvider
      */
     function read()
     {
+        if (!file_exists($this->config['file'])) {
+            return '';
+        }
+
         $phpExt = '.php';
 
         //如果文件扩展名是php，则用include包含引入，内容代码会自动解析，不再走文本内容

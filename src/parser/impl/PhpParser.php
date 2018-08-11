@@ -31,9 +31,7 @@ class PhpParser implements IParser
      */
     function unParse($data)
     {
-        $this->arrayToCode($data, $code);
-        $code = '<?php ' . PHP_EOL . 'return [' . PHP_EOL . $code . ']; ';
-        return $code;
+        return '<?php ' . PHP_EOL . 'return ' . var_export($data, true) . '; ';
     }
 
     /**

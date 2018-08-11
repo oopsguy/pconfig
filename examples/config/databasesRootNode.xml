@@ -1,0 +1,10 @@
+<database>
+<type>nosql</type>
+<vendors>
+<vendor>redis</vendor>
+<vendor>mongo</vendor>
+<vendor>memcache</vendor>
+<vendor>levelDB</vendor>
+<vendor>etc</vendor>
+</vendors>
+</database>

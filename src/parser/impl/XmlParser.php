@@ -14,6 +14,14 @@ use pconfig\utils\ArrayUtil;
 class XmlParser implements IParser
 {
 
+    private $config = [
+        'root' => 'root'
+    ];
+
+    public function __construct(array $config = []) {
+        $this->config = array_merge($this->config, $config);
+    }
+
     /**
      * 解析文本内容
      * @param string $content 文本内容
@@ -33,7 +41,7 @@ class XmlParser implements IParser
      */
     function unParse($data)
     {
-        return '<root>' . $this->arrayToXML($data) . '</root>';
+        return "<{$this->config['root']}>"  . PHP_EOL . $this->arrayToXML($data) . "</{$this->config['root']}>";
     }
 
     /**
@@ -54,13 +62,17 @@ class XmlParser implements IParser
 
         foreach ($elem as $key => $value) {
             if (is_array($value)) {
-                $xml .=  "<{$key}>" . $this->arrayToXML($value, $key) . "</{$key}>";
+                if (ArrayUtil::isAssocArray($value)) {
+                    $xml .=  "<{$key}>" . PHP_EOL . $this->arrayToXML($value, $key) . "</{$key}>" . PHP_EOL;
+                } else {
+                    $xml .=  $this->arrayToXML($value, $key);
+                }
             } else {
                 $realKey = $isEndElem ? $parentElem : $key;
                 if (is_numeric($value)) {
-                    $xml .= "<{$realKey}>{$value}</{$realKey}>";
+                    $xml .= "<{$realKey}>{$value}</{$realKey}>" . PHP_EOL;
                 } else {
-                    $xml .= "<{$realKey}>" . htmlspecialchars($value) . "</{$realKey}>";
+                    $xml .= "<{$realKey}>" . htmlspecialchars($value) . "</{$realKey}>" . PHP_EOL;
                 }
             }
         }

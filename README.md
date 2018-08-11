@@ -4,16 +4,6 @@ PConfig 是一个使用了 PHP 编写的配置文件解析库，能够解析 PHP
 
 PConfig is a PHP library for parsing config file ( e.g. php, json, xml, yaml, ini...) It has simple apis and  easy to use. You can custom your own provider and parser to process data.
 
-## 更新 Update
-
-中文
-
-- 2017-12-24 修改 `pconfig\Config#setConfigFile` api 为 `pconfig\Config#setPath`
-
-English
-
-- 2017-12-24 change `pconfig\Config#setConfigFile` api to `pconfig\Config#setPath`
-
 ## 安装 Install
 
 使用 PHP Composer 安装
@@ -21,7 +11,7 @@ English
 Install by composer
 
 ```bash
-composer require oopsguy/pconfig
+composer require oopsguy/pconfig:1.0
 ```
 
 ## 用法 Usage
@@ -45,7 +35,8 @@ $config->save();
 // json file
 $jsonConfig = DefaultConfigBuilder::build('config/config.json');
 $jsonConfig->set('homepage', 'https://github.com');
-$jsonConfig->setPath('config/temp_json.json'); //Save as temp_json.json file
+// Save as temp_json.json file
+$jsonConfig->setPath('config/temp_json.json');
 $jsonConfig->save();
 
 $parser = new YamlParser();
@@ -69,10 +60,53 @@ $config = new Config(
     new JsonParser(), // Specify format parser
     new FileProvider(['file' => 'config/config.php']),
     [
-        Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, // Change config keys into case lower
-        Config::CONFIG_SEPARATOR => '.', // Setting config item separator
+        // 配置项统一小写转换
+        // Change config keys into case lower
+        Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, 
+        // 配置项以 . 分割
+        // Setting config item separator
+        Config::CONFIG_SEPARATOR => '.', 
     ]
 );
+```
+
+## 下标访问 ArrayAccess
+
+配置实现了 SPL ArrayAccess 接口，支持下标操作方式
+
+Implement SPL ArrayAccess interface.
+
+```php
+<?php
+use pconfig\DefaultConfigBuilder;
+
+require '../vendor/autoload.php';
+
+// access by index
+$json = DefaultConfigBuilder::build('./config/arrayaccess.json');
+$json['status'] = true;
+$json['data'] = [
+    'page' => 1,
+    'pageSize' => 10,
+    'pages' => 2,
+    'total' => 13,
+    'list' => [
+        [
+            'username' => 'oopsguy',
+            'gender' => '男'
+        ]
+    ]
+];
+$json['msg'] = 'ok';
+$json['delData'] = 'XHSYSYSDkoksoada8dsaidsa9d8adsa';
+
+// unset and isset 
+var_dump(isset($json['delData']));
+unset($json['delData']);
+var_dump(isset($json['delData']));
+
+// save config
+$json->save();
 ```
 
 config example

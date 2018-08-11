@@ -6,12 +6,12 @@
     {
       "name": "Oopsguy",
       "email": "oopsguy@foxmail.com",
-      "homepage": "https://github.com/oopsguy/phpconf/graphs/contributors"
+      "homepage": "https://github.com/oopsguy/pconfig/graphs/contributors"
     }
   ],
   "support": {
-    "issues": "https://github.com/oopsguy/phpconf/issues",
-    "source": "https://github.com/oopsguy/phpconf"
+    "issues": "https://github.com/oopsguy/pconfig/issues",
+    "source": "https://github.com/oopsguy/pconfig"
   },
   "require": {
     "php": ">=5.6.0",

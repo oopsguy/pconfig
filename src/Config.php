@@ -83,6 +83,10 @@ class Config implements \ArrayAccess
 
         $content = $this->provider->read();
         $this->config = $this->parser->parse($content);
+        
+        if (!is_array($this->config)) {
+            $this->config = [];
+        }
 
         //配置项名称大小写处理
         if (isset($this->extraConfig[self::CONFIG_KEY_CASE])) {
