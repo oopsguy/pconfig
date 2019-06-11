@@ -1,10 +1,11 @@
 <?php
-use pconfig\DefaultConfigBuilder;
+
+use pconfig\ConfigHelper;
 
 require '../vendor/autoload.php';
 
 // access by index
-$json = DefaultConfigBuilder::build('./config/arrayaccess.json');
+$json = ConfigHelper::read('./config/arrayaccess.json');
 $json['status'] = true;
 $json['data'] = [
     'page' => 1,

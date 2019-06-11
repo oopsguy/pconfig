@@ -6,7 +6,6 @@ namespace pconfig\utils;
  * 数组相关工具方法
  * Class ArrayUtil
  * @package pconfig\utils
- * @author Oopsguy <oopsguy@foxmail.com>
  */
 class ArrayUtil
 {

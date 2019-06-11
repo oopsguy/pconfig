@@ -1,24 +1,24 @@
 <?php
 
-namespace pconfig\parser\impl;
+namespace pconfig\serializer\impl;
 
-use pconfig\parser\IParser;
+use pconfig\serializer\ISerializer;
 use pconfig\utils\ArrayUtil;
 
 /**
  * XML格式配置文件解析类
- * Class XmlParser
- * @package pconfig\parser\impl
- * @author Oopsguy <oopsguy@foxmail.com>
+ * Class XMLSerializer
+ * @package pconfig\serializer\impl
  */
-class XmlParser implements IParser
+class XMLSerializer implements ISerializer
 {
 
     private $config = [
         'root' => 'root'
     ];
 
-    public function __construct(array $config = []) {
+    public function __construct(array $config = [])
+    {
         $this->config = array_merge($this->config, $config);
     }
 
@@ -27,7 +27,7 @@ class XmlParser implements IParser
      * @param string $content 文本内容
      * @return array 解析后的数据
      */
-    function parse($content)
+    function deserialize($content)
     {
         $xml = simplexml_load_string($content, 'SimpleXMLElement', LIBXML_NOCDATA);
 
@@ -39,9 +39,9 @@ class XmlParser implements IParser
      * @param array $data 数据
      * @return string 文本内容
      */
-    function unParse($data)
+    function serialize($data)
     {
-        return "<{$this->config['root']}>"  . PHP_EOL . $this->arrayToXML($data) . "</{$this->config['root']}>";
+        return "<{$this->config['root']}>" . PHP_EOL . $this->arrayToXML($data) . "</{$this->config['root']}>";
     }
 
     /**
@@ -63,9 +63,9 @@ class XmlParser implements IParser
         foreach ($elem as $key => $value) {
             if (is_array($value)) {
                 if (ArrayUtil::isAssocArray($value)) {
-                    $xml .=  "<{$key}>" . PHP_EOL . $this->arrayToXML($value, $key) . "</{$key}>" . PHP_EOL;
+                    $xml .= "<{$key}>" . PHP_EOL . $this->arrayToXML($value, $key) . "</{$key}>" . PHP_EOL;
                 } else {
-                    $xml .=  $this->arrayToXML($value, $key);
+                    $xml .= $this->arrayToXML($value, $key);
                 }
             } else {
                 $realKey = $isEndElem ? $parentElem : $key;

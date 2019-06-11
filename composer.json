@@ -1,7 +1,8 @@
 {
   "name": "oopsguy/pconfig",
-  "description": "A PHP library for config file. e.g. json, yaml, ini, xml, php",
+  "description": "A PHP library for parsing configuration(json, yaml, ini, xml, php)",
   "license": "MIT",
+  "version": "1.1",
   "authors": [
     {
       "name": "Oopsguy",
@@ -15,7 +16,10 @@
   },
   "require": {
     "php": ">=5.6.0",
-    "mustangostang/spyc": "0.6.2"
+    "mustangostang/spyc": "0.6.2",
+    "ext-json": "*",
+    "ext-simplexml": "*",
+    "ext-libxml": "*"
   },
   "autoload": {
     "psr-4": {

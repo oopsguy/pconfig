@@ -1,13 +1,11 @@
 <?php
-use pconfig\DefaultConfigBuilder;
-use pconfig\Config;
-use pconfig\parser\impl\YamlParser;
-use pconfig\provider\impl\FileProvider;
+
+use pconfig\ConfigHelper;
 
 require '../vendor/autoload.php';
 
 // php array
-$config = DefaultConfigBuilder::build("./config/arrayConfig.php");
+$config = ConfigHelper::read("./config/arrayConfig.php");
 echo $config->get("app");
 $config->delete("version");
 $config->set('debug', false);

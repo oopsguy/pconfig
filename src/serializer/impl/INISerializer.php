@@ -1,17 +1,16 @@
 <?php
 
-namespace pconfig\parser\impl;
+namespace pconfig\serializer\impl;
 
-use pconfig\parser\IParser;
+use pconfig\serializer\ISerializer;
 use pconfig\utils\ArrayUtil;
 
 /**
  * INI配置文件解析类
- * Class IniParser
- * @package pconfig\parser\impl
- * @author Oopsguy <oopsguy@foxmail.com>
+ * Class INISerializer
+ * @package pconfig\serializer\impl
  */
-class IniParser implements IParser
+class INISerializer implements ISerializer
 {
 
     /**
@@ -24,7 +23,7 @@ class IniParser implements IParser
      * @param string $content 文本内容
      * @return array 解析后的数据
      */
-    function parse($content)
+    function deserialize($content)
     {
         $content = parse_ini_string($content, true);
         $content = $this->splitArrayKey($content);
@@ -37,7 +36,7 @@ class IniParser implements IParser
      * @param array $data 数据
      * @return string 文本内容
      */
-    function unParse($data)
+    function serialize($data)
     {
         return $this->arrayToINI($data);
     }
@@ -69,7 +68,7 @@ class IniParser implements IParser
      * 将数组键部分内容处理成层次结构
      * @param array $array 处理的数组
      * @param array $keys 分割后的key数组
-     * @param $value 最终的值
+     * @param $value mixed 最终的值
      */
     private function combineKeyArray(array &$array, array $keys, $value)
     {

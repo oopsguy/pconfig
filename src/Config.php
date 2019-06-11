@@ -2,16 +2,18 @@
 
 namespace pconfig;
 
-use pconfig\parser\IParser;
-use pconfig\provider\AbstractProvider;
+use ArrayAccess;
+use Closure;
+use Exception;
+use pconfig\provider\impl\FileProvider;
+use pconfig\serializer\ISerializer;
 use pconfig\utils\ArrayUtil;
 
 /**
  * 配置文件类
  * @package pconfig
- * @author Oopsguy <oopsguy@foxmail.com>
  */
-class Config implements \ArrayAccess
+class Config implements ArrayAccess
 {
     /**
      * 默认配置项下标分割符
@@ -56,36 +58,40 @@ class Config implements \ArrayAccess
     ];
 
     /**
-     * @var IParser 配置文件内容解析器
+     * @var ISerializer 配置文件内容解析器
      */
-    private $parser;
+    private $serializer;
 
     /**
-     * @var AbstractProvider 配置文件内容读取对象
+     * @var FileProvider 配置文件内容读取对象
      */
     private $provider;
 
     /**
      * 构造方法
-     * @param IParser $parser 内容解析器
-     * @param AbstractProvider $provider 内容提供者
-     * @param array $extraConfig 解析类配置
-     * @throws \Exception
+     * @param ISerializer $serializer 内容解析器
+     * @param FileProvider $provider 内容提供者
+     * @param array $extraConfig extra configuration
+     * @throws Exception
      */
-    function __construct(IParser $parser, AbstractProvider $provider, array $extraConfig = [])
+    function __construct(ISerializer $serializer, FileProvider $provider, $extraConfig = [])
     {
-        if (is_null($parser) || is_null($provider)) {
-            throw new \Exception('Parser and Provider can NOT be NULL!');
+        if (is_null($serializer) || is_null($provider)) {
+            throw new Exception('Serializer and Provider can NOT be NULL!');
         }
 
-        $this->parser = $parser;
+        $this->serializer = $serializer;
         $this->provider = $provider;
 
         $content = $this->provider->read();
-        $this->config = $this->parser->parse($content);
-        
+        $this->config = $this->serializer->deserialize($content);
+
         if (!is_array($this->config)) {
             $this->config = [];
+        }
+
+        if (is_array($extraConfig)) {
+            array_merge($this->extraConfig, $extraConfig);
         }
 
         //配置项名称大小写处理
@@ -100,8 +106,7 @@ class Config implements \ArrayAccess
      */
     public function save()
     {
-        $content = $this->parser->unParse($this->config);
-
+        $content = $this->serializer->serialize($this->config);
         return $this->provider->save($content);
     }
 
@@ -111,7 +116,7 @@ class Config implements \ArrayAccess
      */
     public function setPath($file)
     {
-        $this->provider->setConfig('file', $file);
+        $this->provider->setFile($file);
     }
 
     /**
@@ -154,14 +159,15 @@ class Config implements \ArrayAccess
 
         $keys = $this->parseKey($key);
 
-        return $this->find($this->config, $keys, function ($item, &$config, $index) {
-            $isAssoc = ArrayUtil::isAssocArray($config);
-            unset($config[$index]);
-            //不是关联数组的数组需要从新排序下标
-            if (!$isAssoc) {
-                $config = array_values($config);
-            }
-        });
+        return $this->find($this->config, $keys,
+            function (/** @noinspection PhpUnusedParameterInspection */ $item, &$config, $index) {
+                $isAssoc = ArrayUtil::isAssocArray($config);
+                unset($config[$index]);
+                //不是关联数组的数组需要从新排序下标
+                if (!$isAssoc) {
+                    $config = array_values($config);
+                }
+            });
     }
 
     /**
@@ -254,7 +260,7 @@ class Config implements \ArrayAccess
 
     /**
      * 分割处理配置项名称
-     * @param $key 配置项名称
+     * @param $key string 配置项名称
      * @return array 分割后的数组
      */
     private function parseKey($key)
@@ -266,12 +272,12 @@ class Config implements \ArrayAccess
      * 寻找目标配置项
      * @param array $config 配置数组
      * @param array $keys $key 配置项下标数组
-     * @param \Closure|null $callback 处理回调
+     * @param Closure|null $callback 处理回调
      * @param int $existsMode 元素不能存在的时候的处理方式
      * @param int $index 当前配置下标的位置
      * @return bool 是否找到配置项
      */
-    private function find(array &$config, array $keys, \Closure $callback = null, $existsMode = self::EXISTS_MODE_BREAK, $index = 0)
+    private function find(array &$config, array $keys, Closure $callback = null, $existsMode = self::EXISTS_MODE_BREAK, $index = 0)
     {
         if (!isset($config[$keys[$index]])) {
             if ($existsMode == self::EXISTS_MODE_BREAK) {

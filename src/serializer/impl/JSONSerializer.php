@@ -1,23 +1,22 @@
 <?php
 
-namespace pconfig\parser\impl;
+namespace pconfig\serializer\impl;
 
-use pconfig\parser\IParser;
+use pconfig\serializer\ISerializer;
 
 /**
  * JSON配置文件解析类
- * Class JsonParser
- * @package pconfig\parser\impl
- * @author Oopsguy <oopsguy@foxmail.com>
+ * Class JSONSerializer
+ * @package pconfig\serializer\impl
  */
-class JsonParser implements IParser
+class JSONSerializer implements ISerializer
 {
     /**
      * 解析文本内容
      * @param string $content 文本内容
      * @return array 解析后的数据
      */
-    function parse($content)
+    function deserialize($content)
     {
         return json_decode($content, true);
     }
@@ -27,7 +26,7 @@ class JsonParser implements IParser
      * @param array $data 数据
      * @return string 文本内容
      */
-    function unParse($data)
+    function serialize($data)
     {
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }

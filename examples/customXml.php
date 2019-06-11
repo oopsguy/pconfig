@@ -1,13 +1,14 @@
 <?php
-use pconfig\DefaultConfigBuilder;
+
+use pconfig\ConfigHelper;
 use pconfig\Config;
-use pconfig\parser\impl\XmlParser;
+use pconfig\serializer\impl\XMLSerializer;
 use pconfig\provider\impl\FileProvider;
 
 require '../vendor/autoload.php';
 
 // simple xml
-$xml = DefaultConfigBuilder::build('./config/simpleXml.xml');
+$xml = ConfigHelper::read('./config/simpleXml.xml');
 // print_r($xml->get());
 // $xml->set('database', [
 //     'oracle', 'mysql', 'db2', 'sqlserver'
@@ -24,10 +25,10 @@ unset($xml['config.type']);
 $xml->save();
 
 // Custom xml root node name
-$parser = new XmlParser([
+$parser = new XMLSerializer([
     'root' => 'database'
 ]);
-$provider = new FileProvider(['file' => './config/databasesRootNode.xml']);
+$provider = new FileProvider('./config/databasesRootNode.xml');
 $extConfig = new Config($parser, $provider);
 $extConfig->set('type', 'nosql');
 $extConfig->set('vendors.vendor', [

@@ -1,89 +1,95 @@
-# PConfig 配置文件库
+# PConfig
 
-PConfig 是一个使用了 PHP 编写的配置文件解析库，能够解析 PHP（array）、JSON、YAML、XML 和 INI 格式的文件，其统一了 API 操作，屏蔽了不同格式文件的解析细节，使用起来更加简单、高效。
+PConfig is a PHP library for parsing configuration (php, json, xml, yaml, ini). 
+It has simple APIs and is easy to use. 
+You can also custom your own provider and serializer.
 
-PConfig is a PHP library for parsing config file ( e.g. php, json, xml, yaml, ini...) It has simple apis and  easy to use. You can custom your own provider and parser to process data.
-
-## 安装 Install
-
-使用 PHP Composer 安装
-
-Install by composer
+## Install
 
 ```bash
-composer require oopsguy/pconfig:1.0
+composer require oopsguy/pconfig:1.1
 ```
 
-## 用法 Usage
+## Usage
 
 ```php
 <?php
 
-use pconfig\DefaultConfigBuilder;
 use pconfig\Config;
-use pconfig\parser\impl\YamlParser;
+use pconfig\ConfigHelper;
+use pconfig\serializer\impl\YAMLSerializer;
 use pconfig\provider\impl\FileProvider;
 
-// php array
-$config = DefaultConfigBuilder::build("config/config.php");
+// Parsing PHP array
+// Auto detect file extension and choose a suitable serializer
+$config = ConfigHelper::read("config/config.php");
 echo $config->get("app");
 $config->delete("version");
 $config->set('debug', false);
 $config->set("settings.key", "new value");
 $config->save();
 
-// json file
-$jsonConfig = DefaultConfigBuilder::build('config/config.json');
+// Parsing JSON
+$jsonConfig = ConfigHelper::read('config/config.json');
 $jsonConfig->set('homepage', 'https://github.com');
-// Save as temp_json.json file
-$jsonConfig->setPath('config/temp_json.json');
+// Save as temp.json file
+$jsonConfig->setPath('config/temp.json');
 $jsonConfig->save();
 
-$parser = new YamlParser();
-$provider = new FileProvider(['file' => 'config/settings.yaml']);
+// Parsing YAML
+// Explicitly specify a YAML serializer
+$parser = new YAMLSerializer();
+$provider = new FileProvider('config/settings.yaml');
 $extConfig = new Config($parser, $provider);
 $extConfig->set('type', 'yaml');
 $extConfig->save();
 ```
 
-配置项的层级关系使用逗号分割，您也可以配置自定义分割规则
+The default key separator is a `.`.
 
-The hierarchy of configuration items is separated by commas, you can custom your own separator.
+```
+key1.key2.key3
+```
+
+You can use `Config::CONFIG_SEPARATOR` to custom your own separator.
+
+```
+Config::CONFIG_SEPARATOR => '-',
+```
+
+```
+key1-key2-key3
+```
 
 ```php
 <?php
 use pconfig\Config;
 use pconfig\provider\impl\FileProvider;
-use pconfig\parser\impl\JsonParser;
+use pconfig\serializer\impl\JSONSerializer;
 
 $config = new Config(
-    new JsonParser(), // Specify format parser
-    new FileProvider(['file' => 'config/config.php']),
+     // Specify the serializer
+    new JSONSerializer(),
+    new FileProvider('config/config.php'),
     [
-        // 配置项统一小写转换
-        // Change config keys into case lower
+        // Change all keys into case lower
         Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, 
-        // 配置项以 . 分割
-        // Setting config item separator
-        Config::CONFIG_SEPARATOR => '.', 
+        // Set the key separator
+        Config::CONFIG_SEPARATOR => '-', 
     ]
 );
 ```
 
-## 下标访问 ArrayAccess
+## ArrayAccess
 
-配置实现了 SPL ArrayAccess 接口，支持下标操作方式
-
-Implement SPL ArrayAccess interface.
+`Config` has implemented `ArrayAccess` interface, you can access configuration by index.
 
 ```php
 <?php
-use pconfig\DefaultConfigBuilder;
+use pconfig\ConfigHelper;
 
-require '../vendor/autoload.php';
-
-// access by index
-$json = DefaultConfigBuilder::build('./config/arrayaccess.json');
+// Access by index
+$json = ConfigHelper::read('./config/arrayaccess.json');
 $json['status'] = true;
 $json['data'] = [
     'page' => 1,
@@ -100,42 +106,23 @@ $json['data'] = [
 $json['msg'] = 'ok';
 $json['delData'] = 'XHSYSYSDkoksoada8dsaidsa9d8adsa';
 
-// unset and isset 
+// unset and isset API
 var_dump(isset($json['delData']));
 unset($json['delData']);
 var_dump(isset($json['delData']));
 
-// save config
+// Save to file
 $json->save();
 ```
 
-config example
+Nested configuration.
 
 ```php
-<?php
-return [
-    'level1' => [
-        'level2' => [
-            'level3' => 'Level 3'
-        ]
-    ]
-];
-```
-
-操作 `level3` 配置项
-
-Set `level3` item
-
-```php
-<?php
-
-// init config ...
 $config->set('level1.level2.level3', "Level end");
-// delete config item
 $config->delete('level1.level2');
 ```
 
-## 配置文件示例 Config file examples
+## Config file examples
 
 ### PHP Array
 
