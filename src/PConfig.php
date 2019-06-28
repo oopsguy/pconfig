@@ -6,6 +6,7 @@ use ArrayAccess;
 use Closure;
 use Exception;
 use pconfig\provider\impl\FileProvider;
+use pconfig\provider\IProvider;
 use pconfig\serializer\ISerializer;
 use pconfig\utils\ArrayUtil;
 use pconfig\utils\ClassUtil;
@@ -78,22 +79,24 @@ class PConfig implements ArrayAccess
             $this->loadData();
         } elseif (is_array($config)) {
             $file = null;
+            $this->provider = $config[self::CONFIG_KEY_PROVIDER];
+            $this->serializer = $config[self::CONFIG_KEY_SERIALIZER];
+
             if (isset($config[self::CONFIG_KEY_DATA])) {
                 $this->data = $config[self::CONFIG_KEY_DATA];
             } elseif (isset($config[self::CONFIG_KEY_FILE])) {
                 $file = $config[self::CONFIG_KEY_FILE];
-                $this->provider = new FileProvider($file);
-            }
+                if (is_null($this->provider)) {
+                    $this->provider = new FileProvider($file);
+                }
 
-            $this->serializer = $config[self::CONFIG_KEY_SERIALIZER];
-
-            if (is_null($this->provider)) {
-                $this->provider = $config[self::CONFIG_KEY_PROVIDER];
-            }
-
-            if (!empty($file)) {
                 if (is_null($this->serializer)) {
                     $this->serializer = $this->detectSerializer($file);
+                }
+                $this->loadData();
+            } else {
+                if (is_null($this->provider)) {
+                    throw new Exception("must provide 'data', 'file' or 'provider'");
                 }
                 $this->loadData();
             }
@@ -104,6 +107,8 @@ class PConfig implements ArrayAccess
                     $this->config = array_merge($this->config, $extraConfig);
                 }
             }
+        } else {
+            throw new Exception('invalid parameter, require a string or an array');
         }
     }
 
@@ -164,6 +169,22 @@ class PConfig implements ArrayAccess
     public function setFile($file)
     {
         $this->provider->setFile($file);
+    }
+
+    /**
+     * @param IProvider $provider
+     */
+    public function setProvider($provider)
+    {
+        $this->provider = $provider;
+    }
+
+    /**
+     * @param ISerializer $serializer
+     */
+    public function setSerializer($serializer)
+    {
+        $this->serializer = $serializer;
     }
 
     public function offsetExists($offset)

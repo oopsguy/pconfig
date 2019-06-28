@@ -4,6 +4,8 @@ namespace pconfig\test;
 
 use Exception;
 use pconfig\PConfig;
+use pconfig\provider\impl\FileProvider;
+use pconfig\serializer\impl\JSONSerializer;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,6 +36,74 @@ class PConfigTest extends TestCase
         $this->_testConfig('yaml');
     }
 
+    public function testNew()
+    {
+        try {
+            $config = new PConfig($this->basePath . 'config.json');
+            $this->_testPartial($config);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        try {
+            $config = new PConfig([
+                PConfig::CONFIG_KEY_FILE => $this->basePath . 'config.json'
+            ]);
+            $this->_testPartial($config);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        try {
+            $config = new PConfig([
+                PConfig::CONFIG_KEY_DATA => [
+                    'language' => [
+                        'php' => [
+                            'type' => ['array', 'string', 'object']
+                        ]
+                    ]
+                ]
+            ]);
+            $this->_testPartial($config);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        try {
+            $config = new PConfig([
+                PConfig::CONFIG_KEY_FILE => $this->basePath . 'config.json',
+                PConfig::CONFIG_KEY_SERIALIZER => new JSONSerializer(),
+            ]);
+            $this->_testPartial($config);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        try {
+            $config = new PConfig([
+                PConfig::CONFIG_KEY_PROVIDER => new FileProvider($this->basePath . 'config.json'),
+                PConfig::CONFIG_KEY_SERIALIZER => new JSONSerializer(),
+            ]);
+            $this->_testPartial($config);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+    }
+
+    /**
+     * @param PConfig $config
+     */
+    private function _testPartial($config)
+    {
+        $this->assertNotNull($config);
+        $this->assertArrayHasKey('language', $config);
+        $this->assertArrayHasKey("php", $config->get('language'));
+        $this->assertArrayHasKey("php", $config['language']);
+        $this->assertArrayHasKey("type", $config['language']['php']);
+        $this->assertCount(3, $config['language']['php']['type']);
+        $this->assertContains('object', $config['language']['php']['type']);
+    }
+
     private function _testConfig($type)
     {
         $config = null;
@@ -42,14 +112,7 @@ class PConfigTest extends TestCase
         } catch (Exception $e) {
             $this->fail($e->getMessage());
         }
-        $this->assertNotNull($config);
-
-        $this->assertArrayHasKey('language', $config);
-        $this->assertArrayHasKey("php", $config->get('language'));
-        $this->assertArrayHasKey("php", $config['language']);
-        $this->assertArrayHasKey("type", $config['language']['php']);
-        $this->assertCount(3, $config['language']['php']['type']);
-        $this->assertContains('object', $config['language']['php']['type']);
+        $this->_testPartial($config);
 
         try {
             $config = new PConfig([
@@ -58,14 +121,7 @@ class PConfigTest extends TestCase
         } catch (Exception $e) {
             $this->fail($e->getMessage());
         }
-        $this->assertNotNull($config);
-
-        $this->assertArrayHasKey('language', $config);
-        $this->assertArrayHasKey("php", $config->get('language'));
-        $this->assertArrayHasKey("php", $config['language']);
-        $this->assertArrayHasKey("type", $config['language']['php']);
-        $this->assertCount(3, $config['language']['php']['type']);
-        $this->assertContains('object', $config['language']['php']['type']);
+        $this->_testPartial($config);
 
         $this->assertTrue($config->set('hello.world', true));
 

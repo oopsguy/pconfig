@@ -21,13 +21,44 @@ composer require oopsguy/pconfig
 
 ```php
 <?php
+use pconfig\PConfig;
+use \pconfig\provider\impl\FileProvider;
+use \pconfig\serializer\impl\JSONSerializer;
 
+$config = new PConfig('config-file.json');
+
+$config = new PConfig([
+    'file' => 'config-file.json'
+]);
+
+$config = new PConfig([
+    'data' => [
+        'key' => 'value'
+        // more...
+    ]
+]);
+$config->setSerializer(new JSONSerializer());
+$config->setProvider(new FileProvider('config/a.json'));
+
+$config = new PConfig([
+   'file' => 'config-file.json',
+   'serializer' => new JSONSerializer(),
+]);
+
+$config = new PConfig([
+    'serializer' => new JSONSerializer(),
+    'provider' => new FileProvider('config-file.json'),
+]);
+```
+
+```php
+<?php
 use pconfig\PConfig;
 use pconfig\serializer\impl\YAMLSerializer;
 use pconfig\provider\impl\FileProvider;
 
-// Parsing PHP array
-// Auto detect file extension and choose a suitable serializer
+// PHP array
+// Automatically detect file extension and select a suitable serializer
 $config = new PConfig("config/config.php");
 echo $config->get("app");
 $config->delete("version");
@@ -35,7 +66,7 @@ $config->set('debug', false);
 $config->set("settings.key", "new value");
 $config->save();
 
-// Parsing JSON
+// handle JSON
 $jsonConfig = new PConfig('config/config.json');
 $jsonConfig->set('homepage', 'https://github.com');
 // Save as temp.json file
@@ -89,7 +120,7 @@ $config = new PConfig([
 
 ## ArrayAccess
 
-`Config` has implemented `ArrayAccess` interface, you can access configuration by index.
+`PConfig` has implemented `ArrayAccess` interface, you can access configuration by array operations.
 
 ```php
 <?php
@@ -137,6 +168,8 @@ $config->delete('level1.level2');
 - `exists($key)`
 - `getConfig($key)`
 - `setConfig($key, $value)`
+- `setProvider($provider)`
+- `setSerializer($serializer)`
 - `setFile($path)`
 - `reload()`
 - `clear()`

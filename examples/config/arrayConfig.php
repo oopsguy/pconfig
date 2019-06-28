@@ -1,4 +1,4 @@
-<?php
+<?php 
 return ['0' => '',
     'debug' => false,
     'settings' => [
