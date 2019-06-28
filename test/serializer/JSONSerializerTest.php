@@ -1,21 +1,24 @@
 <?php
 
-namespace pconfig\serializer\impl;
+namespace pconfig\test\serializer\impl;
 
+use pconfig\serializer\impl\JSONSerializer;
 use pconfig\serializer\ISerializer;
-use PHPUnit\Framework\TestCase;
+use pconfig\test\serializer\BaseSerializerTest;
 
-class JSONSerializerTest extends TestCase
+/**
+ * Testing for JSONSerializer
+ * Class JSONSerializerTest
+ * @package pconfig\test\serializer\impl
+ */
+class JSONSerializerTest extends BaseSerializerTest
 {
-
     /**
-     * @var ISerializer
+     * @return ISerializer
      */
-    private $serializer;
-
-    protected function setUp()
+    protected function targetSerializer()
     {
-        $this->serializer = new JSONSerializer();
+        return new JSONSerializer();
     }
 
     public function testDeserialize()

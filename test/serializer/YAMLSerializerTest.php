@@ -1,20 +1,24 @@
 <?php
 
-namespace pconfig\serializer\impl;
+namespace pconfig\test\serializer\impl;
 
 use pconfig\serializer\ISerializer;
-use PHPUnit\Framework\TestCase;
+use pconfig\serializer\impl\YAMLSerializer;
+use pconfig\test\serializer\BaseSerializerTest;
 
-class YAMLSerializerTest extends TestCase
+/**
+ * Testing for YAMLSerializer
+ * Class YAMLSerializerTest
+ * @package pconfig\test\serializer\impl
+ */
+class YAMLSerializerTest extends BaseSerializerTest
 {
     /**
-     * @var ISerializer
+     * @return ISerializer
      */
-    private $serializer;
-
-    protected function setUp()
+    protected function targetSerializer()
     {
-        $this->serializer = new YAMLSerializer();
+        return new YAMLSerializer();
     }
 
     public function testDeserialize()

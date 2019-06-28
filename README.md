@@ -1,7 +1,15 @@
 # PConfig
 
-PConfig is a PHP library for parsing configuration (php, json, xml, yaml, ini). 
+PConfig is a PHP library for parsing configuration. 
 It has simple APIs and is easy to use.
+
+## Supported formats
+
+- php
+- json
+- xml
+- yaml
+- ini
 
 ## Installation
 
@@ -52,10 +60,10 @@ The default key separator is a dot-notation `.`.
 key1.key2.key3
 ```
 
-You can use `Config::CONFIG_SEPARATOR` to custom your own separator.
+You can use `PConfig::CONFIG_KEY_EXTRACT_SEPARATOR` to custom your own separator.
 
 ```
-Config::CONFIG_SEPARATOR => '-',
+PConfig::CONFIG_KEY_EXTRACT_SEPARATOR => '-',
 ```
 
 ```
@@ -129,9 +137,10 @@ $config->delete('level1.level2');
 - `exists($key)`
 - `getConfig($key)`
 - `setConfig($key, $value)`
+- `setFile($path)`
+- `reload()`
 - `clear()`
 - `save()`
-- `setFile($path)`
 
 ## Licence
 

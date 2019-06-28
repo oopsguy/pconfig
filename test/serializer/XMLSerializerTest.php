@@ -1,22 +1,26 @@
 <?php
 
-namespace pconfig\serializer\impl;
+namespace pconfig\test\serializer\impl;
 
+use pconfig\serializer\impl\XMLSerializer;
 use pconfig\serializer\ISerializer;
-use PHPUnit\Framework\TestCase;
+use pconfig\test\serializer\BaseSerializerTest;
 
-class XMLSerializerTest extends TestCase
+/**
+ * Testing for XMLSerializer
+ * Class XMLSerializerTest
+ * @package pconfig\test\serializer\impl
+ */
+class XMLSerializerTest extends BaseSerializerTest
 {
     const ROOT = 'xml';
 
     /**
-     * @var ISerializer
+     * @return ISerializer
      */
-    private $serializer;
-
-    protected function setUp()
+    protected function targetSerializer()
     {
-        $this->serializer = new XMLSerializer([
+        return new XMLSerializer([
             'root' => self::ROOT
         ]);
     }

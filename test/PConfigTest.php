@@ -1,35 +1,40 @@
 <?php
 
-namespace pconfig;
+namespace pconfig\test;
 
 use Exception;
+use pconfig\PConfig;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * Class PConfigTest
+ * @package pconfig\test
+ */
 class PConfigTest extends TestCase
 {
     private $basePath = __DIR__ . '/data/';
 
     public function testJSON()
     {
-        $this->testConfig('json');
+        $this->_testConfig('json');
     }
 
     public function testINI()
     {
-        $this->testConfig('ini');
+        $this->_testConfig('ini');
     }
 
     public function testPHP()
     {
-        $this->testConfig('php');
+        $this->_testConfig('php');
     }
 
     public function testYAML()
     {
-        $this->testConfig('yaml');
+        $this->_testConfig('yaml');
     }
 
-    private function testConfig($type)
+    private function _testConfig($type)
     {
         $config = null;
         try {

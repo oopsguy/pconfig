@@ -1,20 +1,24 @@
 <?php
 
-namespace pconfig\serializer\impl;
+namespace pconfig\test\serializer\impl;
 
+use pconfig\serializer\impl\INISerializer;
 use pconfig\serializer\ISerializer;
-use PHPUnit\Framework\TestCase;
+use pconfig\test\serializer\BaseSerializerTest;
 
-class INISerializerTest extends TestCase
+/**
+ * Testing for INISerializer
+ * Class INISerializerTest
+ * @package pconfig\test\serializer\impl
+ */
+class INISerializerTest extends BaseSerializerTest
 {
     /**
-     * @var ISerializer
+     * @return ISerializer
      */
-    private $serializer;
-
-    protected function setUp()
+    protected function targetSerializer()
     {
-        $this->serializer = new INISerializer();
+        return new INISerializer();
     }
 
     public function testDeserialize()

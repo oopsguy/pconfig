@@ -1,6 +1,7 @@
 {
   "name": "oopsguy/pconfig",
   "description": "A PHP library for parsing configuration(json, yaml, ini, xml and php)",
+  "type": "library",
   "license": "MIT",
   "version": "1.1",
   "authors": [
@@ -26,8 +27,12 @@
   },
   "autoload": {
     "psr-4": {
-      "pconfig\\": "src/",
-      "test\\": "test/"
+      "pconfig\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "pconfig\\test\\": "test/"
     }
   }
 }
