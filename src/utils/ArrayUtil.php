@@ -3,7 +3,7 @@
 namespace pconfig\utils;
 
 /**
- * 数组相关工具方法
+ * Array utility
  * Class ArrayUtil
  * @package pconfig\utils
  */
@@ -11,13 +11,13 @@ class ArrayUtil
 {
 
     /**
-     * 判断一直数组中是否存在数组元素
-     * @param array $arr 目标数组
-     * @return bool 是否存在
+     * Return true if the specified array `$arr` has array type value.
+     * @param array $arr array
+     * @return bool
      */
     public static function hasArrayValue(array $arr)
     {
-        $val = array_filter($arr, function($item) {
+        $val = array_filter($arr, function ($item) {
             return is_array($item);
         });
 
@@ -25,11 +25,12 @@ class ArrayUtil
     }
 
     /**
-     * 判断数组是否是关联数组
-     * @param array $arr 目标数组
-     * @return bool 是否是关联数组
+     * Return true if the specified array `$arr` is a assoc array.
+     * @param array $arr array
+     * @return bool
      */
-    public static function isAssocArray(array $arr) {
+    public static function isAssocArray(array $arr)
+    {
         return array_keys($arr) !== range(0, count($arr) - 1);
     }
 

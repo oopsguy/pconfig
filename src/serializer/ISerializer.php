@@ -19,7 +19,7 @@ interface ISerializer
 
     /**
      * deserialize content
-     * @param array $content raw content
+     * @param string $content raw content
      * @return array deserialized data
      */
     function deserialize($content);

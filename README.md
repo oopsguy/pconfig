@@ -1,13 +1,12 @@
 # PConfig
 
 PConfig is a PHP library for parsing configuration (php, json, xml, yaml, ini). 
-It has simple APIs and is easy to use. 
-You can also custom your own provider and serializer.
+It has simple APIs and is easy to use.
 
-## Install
+## Installation
 
 ```bash
-composer require oopsguy/pconfig:1.1
+composer require oopsguy/pconfig
 ```
 
 ## Usage
@@ -15,14 +14,13 @@ composer require oopsguy/pconfig:1.1
 ```php
 <?php
 
-use pconfig\Config;
-use pconfig\ConfigHelper;
+use pconfig\PConfig;
 use pconfig\serializer\impl\YAMLSerializer;
 use pconfig\provider\impl\FileProvider;
 
 // Parsing PHP array
 // Auto detect file extension and choose a suitable serializer
-$config = ConfigHelper::read("config/config.php");
+$config = new PConfig("config/config.php");
 echo $config->get("app");
 $config->delete("version");
 $config->set('debug', false);
@@ -30,22 +28,25 @@ $config->set("settings.key", "new value");
 $config->save();
 
 // Parsing JSON
-$jsonConfig = ConfigHelper::read('config/config.json');
+$jsonConfig = new PConfig('config/config.json');
 $jsonConfig->set('homepage', 'https://github.com');
 // Save as temp.json file
-$jsonConfig->setPath('config/temp.json');
+$jsonConfig->setFile('config/temp.json');
 $jsonConfig->save();
 
 // Parsing YAML
 // Explicitly specify a YAML serializer
-$parser = new YAMLSerializer();
+$serializer = new YAMLSerializer();
 $provider = new FileProvider('config/settings.yaml');
-$extConfig = new Config($parser, $provider);
+$extConfig = new PConfig([
+        'provider' => $provider,
+        'serializer' => $serializer
+    ]);
 $extConfig->set('type', 'yaml');
 $extConfig->save();
 ```
 
-The default key separator is a `.`.
+The default key separator is a dot-notation `.`.
 
 ```
 key1.key2.key3
@@ -63,21 +64,19 @@ key1-key2-key3
 
 ```php
 <?php
-use pconfig\Config;
+use pconfig\PConfig;
 use pconfig\provider\impl\FileProvider;
 use pconfig\serializer\impl\JSONSerializer;
 
-$config = new Config(
-     // Specify the serializer
-    new JSONSerializer(),
-    new FileProvider('config/config.php'),
-    [
-        // Change all keys into case lower
-        Config::CONFIG_KEY_CASE => Config::KEY_CASE_LOWER, 
-        // Set the key separator
-        Config::CONFIG_SEPARATOR => '-', 
-    ]
-);
+$config = new PConfig([
+        // Specify the serializer
+        'serializer' => new JSONSerializer(),
+        'provider' => new FileProvider('config/config.php'),
+        'config' => [
+                // Set the key separator
+                PConfig::CONFIG_KEY_EXTRACT_SEPARATOR => '-', 
+            ]
+    ]);
 ```
 
 ## ArrayAccess
@@ -86,10 +85,10 @@ $config = new Config(
 
 ```php
 <?php
-use pconfig\ConfigHelper;
+use pconfig\PConfig;
 
 // Access by index
-$json = ConfigHelper::read('./config/arrayaccess.json');
+$json = new PConfig('./config/arrayaccess.json');
 $json['status'] = true;
 $json['data'] = [
     'page' => 1,
@@ -122,110 +121,21 @@ $config->set('level1.level2.level3', "Level end");
 $config->delete('level1.level2');
 ```
 
-## Config file examples
+## APIs
 
-### PHP Array
+- `set($key, $value)`
+- `get($key[, $defult])`
+- `delete($key)`
+- `exists($key)`
+- `getConfig($key)`
+- `setConfig($key, $value)`
+- `clear()`
+- `save()`
+- `setFile($path)`
 
-```php
-return [
-    'app' => 'app name',
-    'version' => '1.0',
-    'debug' => false,
-    'settings' => [
-        'key' => 'value'
-    ]
-]
-```
+## Licence
 
-### JSON
-
-```json
-{
-  "api" : {
-    "qiniu": "qiniu -api",
-    "aliyun": {
-      "db": [
-        "redis",
-        "memcached",
-        "memcache",
-        "nosql",
-        "rdbms"
-      ]
-    }
-  }
-}
-```
-
-### INI
-
-```ini
-[oss]
-key1=qiniu
-key2=aliyun
-key3=tencent
-[db.rdbms]
-subkey=mysql
-subkey1=sqlserver
-subkey3=oracle
-subkey4=db2
-[db.other.nosql]
-a=mongodb
-b=redis
-c=memcache
-d=memcached
-[hello.world.1.2]
-a=0
-b=6
-```
-### XML
-
-```xml
-<root>
-    <title>introduce</title>
-    <language>PHP</language>
-    <desc>
-        <support>
-            <databases>
-                <db>mysql</db>
-                <db>oracle</db>
-                <db>redis</db>
-                <db>sqlserver</db>
-            </databases>
-            <files>
-                <file>json</file>
-                <file>yaml</file>
-                <file>xml</file>
-                <file>txt</file>
-            </files>
-        </support>
-    </desc>
-</root>
-```
-### YAML 
-
-```yaml
-new_post_name: :title.md
-default_layout: post
-highlight:
-  enable: true
-  line_number: true
-
-baidusitemap:
-  path: baidusitemap.xml
-
-database:
-  rdbms:
-    oracle
-    mysql
-    sqlserver
-  nosql:
-    mongodb
-    redis
-```
-
-## License
-
-MIT License
+MIT Licence
 
 
 

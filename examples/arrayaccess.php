@@ -1,11 +1,11 @@
 <?php
 
-use pconfig\ConfigHelper;
+use pconfig\PConfig;
 
 require '../vendor/autoload.php';
 
 // access by index
-$json = ConfigHelper::read('./config/arrayaccess.json');
+$json = new PConfig('./config/arrayaccess.json');
 $json['status'] = true;
 $json['data'] = [
     'page' => 1,
@@ -28,6 +28,10 @@ unset($json['delData']);
 var_dump(isset($json['delData']));
 
 // save config
-$json->save();
+try {
+    $json->save();
+} catch (Exception $e) {
+    die($e->getMessage());
+}
 
 

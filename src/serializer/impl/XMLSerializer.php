@@ -41,7 +41,7 @@ class XMLSerializer implements ISerializer
      */
     function serialize($data)
     {
-        return "<{$this->config['root']}>" . PHP_EOL . $this->arrayToXML($data) . "</{$this->config['root']}>";
+        return '<?xml version="1.0" encoding="UTF-8"?>' . "<{$this->config['root']}>" . PHP_EOL . $this->arrayToXML($data) . "</{$this->config['root']}>";
     }
 
     /**

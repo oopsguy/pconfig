@@ -3,24 +3,21 @@
 namespace pconfig\provider;
 
 /**
- * 配置文件内容操作类
- * Class AbstractProvider
+ * Class IProvider
  * @package pconfig\provider
  */
-abstract class AbstractProvider
+interface IProvider
 {
-
     /**
      * Read configuration
      * @return mixed configuration array
      */
-    abstract function read();
+    function read();
 
     /**
      * Persist configuration
      * @param mixed $config configuration data
      * @return boolean success or not
      */
-    abstract function save($config);
-
+    function save($config);
 }

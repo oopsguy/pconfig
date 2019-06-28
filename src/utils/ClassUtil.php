@@ -12,6 +12,7 @@ use ReflectionClass;
 class ClassUtil
 {
     /**
+     * Loads the specified class `$clazz` with arguments `$args`.
      * @param $clazz
      * @param array $args
      * @return object
@@ -20,7 +21,7 @@ class ClassUtil
     public static function loadClass($clazz, array $args = [])
     {
         if (!class_exists($clazz))
-            throw new Exception("Class [$clazz] could NOT be found!");
+            throw new Exception("Class [$clazz] could not be found!");
 
         $refection = new ReflectionClass($clazz);
 

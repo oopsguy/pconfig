@@ -2,14 +2,15 @@
 
 namespace pconfig\provider\impl;
 
-use pconfig\provider\AbstractProvider;
+use Exception;
+use pconfig\provider\IProvider;
 
 /**
  * FileProvider provides configuration data from file
  * Class FileProvider
  * @package pconfig\provider\impl
  */
-class FileProvider extends AbstractProvider
+class FileProvider implements IProvider
 {
     /**
      * @var string configuration file path
@@ -23,19 +24,12 @@ class FileProvider extends AbstractProvider
 
     /**
      * Read data from file
+     * @param Exception
      * @return mixed configuration data
+     * @throws Exception
      */
     function read()
     {
-        if (!file_exists($this->file)) {
-            return '';
-        }
-        $phpExt = '.php';
-        // If the extension is php, include the file directly.
-        if (substr_compare(strtolower($this->file), $phpExt, -strlen($phpExt)) === 0) {
-            /** @noinspection PhpIncludeInspection */
-            return include $this->file;
-        }
         return file_get_contents($this->file);
     }
 
