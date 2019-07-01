@@ -1,7 +1,7 @@
 # PConfig
 
 PConfig is a PHP library for parsing configuration. 
-It has simple APIs and is easy to use.
+It is lightweight and easy to use.
 
 ## Supported formats
 
@@ -22,8 +22,8 @@ composer require oopsguy/pconfig
 ```php
 <?php
 use pconfig\PConfig;
-use \pconfig\provider\impl\FileProvider;
-use \pconfig\serializer\impl\JSONSerializer;
+use pconfig\provider\impl\FileProvider;
+use pconfig\serializer\impl\JSONSerializer;
 
 $config = new PConfig('config-file.json');
 
